@@ -1,5 +1,7 @@
 package practiceform;
 
+import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -11,19 +13,23 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class PracticeFormTest {
 
+    @BeforeAll
+    static void beforeAll() {
+        Configuration.browserSize = "1920x1080";
+    }
+
     @Test
     void fillFormTest() {
         open("https://demoqa.com/automation-practice-form");
         $("h1.text-center").shouldHave(text("Practice Form"));
+
         $("#firstName").setValue("Egor");
         $("#lastName").setValue("Voronov");
         $("#userEmail").setValue("voronov@gmail.com");
 
-        $("#gender-radio-1").parent().$("label").shouldBe(text("Male"));
-        $("#gender-radio-1").parent().$("label").click();
-//        $("label[for=gender-radio-1]").click();
-
+        $("#genterWrapper").$(byText("Male")).click();
         $("input#userNumber").setValue("88005553535");
+
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOptionByValue("6");
         $(".react-datepicker__year-select").selectOption("2008");
@@ -33,8 +39,7 @@ public class PracticeFormTest {
         $("#subjectsInput").setValue("m");
         $(byText("Maths")).shouldBe(visible).click();
 
-        $("#hobbies-checkbox-1").parent().$("label").shouldBe(text("Sports"));
-        $("#hobbies-checkbox-1").parent().$("label").click();
+        $("#hobbiesWrapper").$(byText("Sports")).click();
 
         $("#uploadPicture").uploadFile(new File("src/test/resources/78654345.png"));
 
